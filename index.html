@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nexora AI – Study Command Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+:root{--bg:#04060c;--panel:#0a1220cc;--line:#1b3a4d;--cy:#4df0ff;--am:#ffb23e;--rd:#ff5c7a;--gn:#5dffb0;--tx:#d6eef5;--mu:#7d9aa8;--in:#02050a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#04060c}}
+:root[data-theme=light]{--bg:#eef6f9;--panel:#ffffffcc;--line:#b6d2dd;--cy:#007a8c;--am:#a85f00;--rd:#c0243f;--gn:#0a7f4f;--tx:#10222b;--mu:#4b6572;--in:#fff;color-scheme:light}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 15px/1.55 'Chakra Petch',system-ui,sans-serif;min-height:100%}
+#stars{position:fixed;inset:0;z-index:-1;width:100%;height:100%}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+h1{font-size:19px;margin:0;letter-spacing:.14em;color:var(--cy)}
+.sub,.mu{color:var(--mu);font-size:13px}
+.badge{font-size:12px;border:1px solid var(--line);padding:4px 10px;color:var(--am);max-width:40vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+nav{display:flex;gap:4px;padding:8px 10px;overflow-x:auto;border-bottom:1px solid var(--line)}
+nav button{flex:none;background:none;border:1px solid transparent;color:var(--mu);font:600 13px inherit;font-family:inherit;padding:9px 14px;cursor:pointer;min-height:44px}
+nav button.on{color:var(--cy);border-color:var(--cy);background:#4df0ff14}
+main{max-width:860px;margin:0 auto;padding:18px 14px 60px}
+.p{background:var(--panel);border:1px solid var(--line);padding:16px;margin-bottom:14px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));backdrop-filter:blur(6px)}
+h2{margin:0 0 4px;font-size:20px}h3{margin:12px 0 6px;font-size:14px;color:var(--cy)}
+p{margin:0 0 8px}
+.b{background:#4df0ff1a;color:var(--cy);border:1px solid var(--cy);font:600 14px inherit;font-family:inherit;padding:10px 16px;cursor:pointer;min-height:44px}
+.b:hover{background:#4df0ff33}.b.am{color:var(--am);border-color:var(--am);background:#ffb23e18}.b.gn{color:var(--gn);border-color:var(--gn);background:#5dffb018}.b.rd{color:var(--rd);border-color:var(--rd);background:#ff5c7a18}.b:disabled{opacity:.4;cursor:default}
+.drop{border:1px dashed var(--cy);padding:26px 12px;text-align:center;cursor:pointer;color:var(--mu)}.drop:hover,.drop.ov{background:#4df0ff12}
+textarea,input[type=text]{width:100%;background:var(--in);border:1px solid var(--line);color:var(--tx);font:inherit;padding:10px;outline:none}
+textarea:focus,input:focus,button:focus-visible{outline:2px solid var(--am)}
+select{flex:1;min-width:180px;background:var(--in);border:1px solid var(--line);color:var(--tx);font:inherit;padding:10px;min-height:44px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat{font-size:22px;font-weight:700;color:var(--am)}
+.bar{height:6px;background:var(--line);margin-top:6px}.bar i{display:block;height:100%;background:var(--cy)}
+.msg{margin:10px 0;padding:10px 12px;border-left:2px solid var(--cy);background:#4df0ff0d}.msg.u{border-color:var(--am);background:#ffb23e10}.msg.x{border-color:var(--rd)}
+.src{font-size:12px;color:var(--mu);margin-top:6px}
+ul.bl{margin:4px 0 8px;padding-left:20px}ul.bl li{margin:4px 0}ul.bl li::marker{color:var(--cy)}
+#chatlog{max-height:52vh;overflow-y:auto}
+.card{perspective:900px;height:230px;cursor:pointer;margin-bottom:12px}
+.ci{position:relative;height:100%;transition:transform .5s;transform-style:preserve-3d}.card.f .ci{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--cy);background:var(--in);padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:auto}
+.face.bk{transform:rotateY(180deg);border-color:var(--am)}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;background:var(--in);border:1px solid var(--line);color:var(--tx);font:inherit;padding:11px 12px;cursor:pointer;min-height:44px}
+.opt:hover{border-color:var(--cy)}.opt.ok{border-color:var(--gn);background:#5dffb01a}.opt.no{border-color:var(--rd);background:#ff5c7a1a}
+.toc div{padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}.toc b{color:var(--cy)}
+.chip{display:inline-block;font-size:11px;padding:2px 8px;border:1px solid var(--line);margin-left:6px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--panel);border:1px solid var(--am);padding:8px 16px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}#toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){.ci{transition:none}}
+</style></head><body>
+<canvas id="stars"></canvas>
+<header><div><h1>NEXORA AI</h1><div class="sub">Study command deck</div></div>
+<div class="row"><div class="badge" id="badge">No data loaded</div><button class="b" id="theme" aria-label="Toggle theme" style="padding:6px 10px;min-height:36px">◐</button></div></header>
+<nav id="nav"></nav>
+<main>
+<section id="t-dash">
+ <div class="p"><h2>Load mission data</h2><p class="mu">Upload a PDF, TXT or MD file, paste notes, or try a sample. Indexing runs in your browser and is remembered between visits.</p>
+  <div class="drop" id="drop">Tap to upload or drop a file<input type="file" id="file" accept=".pdf,.txt,.md" hidden></div>
+  <textarea id="paste" rows="4" placeholder="…or paste your notes here" style="margin-top:10px"></textarea>
+  <div class="row" style="margin-top:10px"><button class="b" id="loadPaste">Index pasted notes</button></div>
+  <div class="row" style="margin-top:10px"><select id="subj" aria-label="Subject"></select><button class="b am" id="sLoad">Load subject notes</button></div>
+  <div class="row" style="margin-top:10px;flex-wrap:nowrap"><input type="text" id="topic" placeholder="Auto-generate notes on any topic, e.g. Photosynthesis" aria-label="Topic"><button class="b gn" id="gen">Auto-generate</button></div>
+  <p class="mu" id="status" style="margin-top:8px"></p></div>
+ <div class="grid">
+  <div class="p"><div class="mu">Active material</div><div class="stat" id="sDoc">None</div><div class="mu" id="sCh">0 chunks</div></div>
+  <div class="p"><div class="mu">Mastered cards</div><div class="stat" id="sCm">–</div><div class="mu">Spaced repetition</div></div>
+  <div class="p"><div class="mu">Quiz mastery</div><div class="stat" id="sMa">–</div><div class="mu">From quiz results</div></div></div>
+ <div class="p"><h3 style="margin-top:0">Sections detected</h3><div class="toc" id="toc"><span class="mu">Nothing indexed yet.</span></div></div>
+</section>
+<section id="t-chat" hidden>
+ <div class="p"><h2>Evidence Q&amp;A</h2><p class="mu">Answers come only from your notes, ranked by TF-IDF cosine similarity, and always arrive as bullet points.</p>
+ <div id="chatlog"><div class="msg">Ready. Load notes, then ask a question.</div></div>
+ <div class="row" style="margin-top:10px;flex-wrap:nowrap"><input type="text" id="q" placeholder="e.g. What is overfitting?" aria-label="Question"><button class="b" id="ask">Ask</button></div></div>
+</section>
+<section id="t-cards" hidden>
+ <div class="p"><h2>Smart flashcards</h2><p class="mu" id="cmeta">Load notes to generate cards.</p>
+ <div class="card" id="card"><div class="ci"><div class="face" id="cf">–</div><div class="face bk" id="cb">–</div></div></div>
+ <div class="row"><button class="b rd" id="cagain" disabled>Again</button><button class="b gn" id="cgot" disabled>Got it</button><button class="b am" id="cshuf">Shuffle</button><button class="b" id="cai">✨ AI cards (25)</button></div>
+ <p class="mu" style="margin-top:10px">Flip the card, then rate it. Cards you miss come back first; cards you know move up through 4 levels.</p></div>
+</section>
+<section id="t-quiz" hidden>
+ <div class="p"><h2>Quiz generator</h2><div id="qbox"><p class="mu">Fill-in-the-blank questions built from your notes.</p><button class="b" id="qstart">Start quiz</button></div></div>
+</section>
+<section id="t-ai" hidden>
+ <div class="p"><h2>AI Studio</h2><p class="mu" id="aiNote">Claude reads your notes and replies in bullet points only.</p>
+  <div class="row"><button class="b" data-ai="sum">Summary notes</button><button class="b" data-ai="terms">Key terms</button><button class="b am" data-ai="qa">Study questions</button><button class="b am" data-ai="exam">Practice exam</button><button class="b gn" data-ai="simple">Explain simply</button></div></div>
+ <div class="p"><div id="aiOut"><span class="mu">Load notes, then pick a tool.</span></div><div class="row" style="margin-top:12px"><button class="b" id="aiDl">Download as text</button></div></div>
+</section>
+<section id="t-prog" hidden>
+ <div class="p"><h2>Performance tracker</h2><div class="grid"><div><div class="mu">Answered</div><div class="stat" id="pN">0</div></div><div><div class="mu">Accuracy</div><div class="stat" id="pA">–</div></div></div></div>
+ <div class="p"><h3 style="margin-top:0">By section</h3><div id="pSec"><span class="mu">No quiz data yet.</span></div><div class="row" style="margin-top:12px"><button class="b rd" id="reset">Reset progress</button></div></div>
+ <div class="p"><h2>Weak-Spot Coach <span class="chip">NEW</span></h2><p class="mu">Finds your weakest sections from quiz results and builds a bullet-point revision plan.</p>
+  <div class="row"><button class="b gn" id="coach">Build my revision plan</button></div><div id="coachOut" style="margin-top:10px"></div></div>
+</section>
+</main>
+<div id="toast" role="status"></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const shuf=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+const toast=m=>{const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2200)};
+
+/* ---------- STORE (persistence layer) ---------- */
+const Store={k:'nexora2',d:{doc:null,prog:[],srs:{},theme:'dark'},
+ load(){try{Object.assign(this.d,JSON.parse(localStorage.getItem(this.k)||'{}'))}catch(e){}},
+ save(){try{localStorage.setItem(this.k,JSON.stringify(this.d))}catch(e){}}};
+
+/* ---------- INDEXER + RETRIEVER (backend logic) ---------- */
+const STOP=new Set('a an the of and or to in on for with is are was were be by as at it this that these those from which what how why when who do does can its into than then so if not but we you they their has have had also such'.split(' '));
+const tok=s=>(s.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(w=>!STOP.has(w)&&w.length>1).map(w=>w.length>4?w.replace(/(ing|es|s)$/,''):w);
+const sentsOf=t=>(t.match(/[^.!?]+[.!?]+/g)||[t]).map(s=>s.trim());
+const Index={D:null,
+ build(name,text,silent){
+  const chunks=[];let sec='Overview';
+  const add=(s,t)=>{if(t.length>650){let c='';sentsOf(t).forEach(x=>{if((c+x).length>420&&c){chunks.push({sec:s,text:c.trim()});c=''}c+=x+' '});if(c.trim())chunks.push({sec:s,text:c.trim()})}else chunks.push({sec:s,text:t})};
+  text.split(/\n+/).map(l=>l.trim()).filter(Boolean).forEach(l=>{
+   if(/^#+\s/.test(l))sec=l.replace(/^#+\s*/,'');
+   else if(l.length<60&&!/[.!?:,;]$/.test(l)&&l.split(' ').length<9)sec=l;
+   else if(l.length>25)add(sec,l)});
+  if(!chunks.length){$('status').textContent='No readable text found. Try a text-based file.';return false}
+  const df={};chunks.forEach(c=>{c.t=tok(c.text);new Set(c.t).forEach(w=>df[w]=(df[w]||0)+1)});
+  const N=chunks.length,idf=w=>Math.log((N+1)/((df[w]||0)+1))+1;
+  const vec=t=>{const m={};t.forEach(w=>m[w]=(m[w]||0)+1);let n=0;for(const w in m){m[w]*=idf(w);n+=m[w]**2}return{m,n:Math.sqrt(n)||1}};
+  chunks.forEach(c=>c.v=vec(c.t));
+  this.D={name,chunks,idf,vec,N,full:chunks.map(c=>c.sec+': '+c.text).join('\n').slice(0,24000)};
+  Store.d.doc={name,text:text.slice(0,200000)};if(!silent)Store.save();
+  UI.afterIndex();return true},
+ cos:(a,b)=>{let s=0;for(const w in a.m)if(b.m[w])s+=a.m[w]*b.m[w];return s/(a.n*b.n)},
+ search(q){const D=this.D,qt=tok(q),qv=D.vec(qt);
+  const rk=D.chunks.map(c=>({c,s:this.cos(qv,c.v)})).sort((a,b)=>b.s-a.s);
+  return{qt,qv,rk,top:rk.slice(0,3).filter(x=>x.s>=.06)}},
+ sents(){return this.D.chunks.flatMap(c=>sentsOf(c.text).map(s=>({s,sec:c.sec}))).filter(x=>x.s.length>35)},
+ keyword(s){const w=(s.match(/[A-Za-z]{6,}/g)||[]).filter(x=>!STOP.has(x.toLowerCase()));return w.sort((a,b)=>(this.D.idf(tok(b)[0]||b)-this.D.idf(tok(a)[0]||a))||b.length-a.length)[0]}};
+
+/* ---------- BULLET ENGINE (forces every AI reply into points) ---------- */
+const Bullets={
+ norm(t){const out=[];String(t).split('\n').map(l=>l.trim()).filter(Boolean).forEach(l=>{
+  if(/^#{1,4}\s/.test(l)){out.push({h:l.replace(/^#+\s*/,'').replace(/\*\*/g,'')});return}
+  const isB=/^([-*•]|\d+[.)])\s+/.test(l),x=l.replace(/^([-*•]|\d+[.)])\s+/,'');
+  if(!isB&&x.length>130)sentsOf(x).forEach(s=>out.push({li:s}));else out.push({li:x})});return out},
+ html(t){let h='',open=false;const inl=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b style="color:var(--am)">$1</b>');
+  this.norm(t).forEach(n=>{if(n.h){if(open){h+='</ul>';open=false}h+='<h3>'+inl(n.h)+'</h3>'}else{if(!open){h+='<ul class="bl">';open=true}h+='<li>'+inl(n.li)+'</li>'}});
+  return h+(open?'</ul>':'')},
+ text(t){return this.norm(t).map(n=>n.h?'\n'+n.h.toUpperCase():'• '+n.li).join('\n')},
+ list:a=>'<ul class="bl">'+a.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>'};
+
+/* ---------- AI SERVICE ---------- */
+const RULE='FORMAT RULES: Reply ONLY in short bullet points (max 20 words each). Never write paragraphs. Group with "## Heading" lines. Bold key terms with **bold**.';
+const AIs={fn:null,
+ async init(){try{this.fn=window.claude?await claude.use('sample'):null}catch(e){}
+  if(!this.fn)$('aiNote').textContent='AI tools only run inside Claude. Q&A, flashcards, quiz and coach work offline here.'},
+ async run(prompt,onText){return this.fn(RULE+'\n\n'+prompt,{cache:false,onText:onText&&(({text})=>onText(text))})},
+ err:e=>e&&e.code==='not_granted'?'AI access was declined. Allow it to continue.':e&&e.code==='rate_limited'?'AI is busy. Wait a moment, then retry.':'That didn’t work. Try again.'};
+
+/* ---------- FEATURES ---------- */
+const Chat={async ask(){
+ const q=$('q').value.trim();if(!q)return;const log=$('chatlog');
+ log.insertAdjacentHTML('beforeend',`<div class="msg u">${esc(q)}</div>`);$('q').value='';
+ const bot=(cls,h)=>{const e=document.createElement('div');e.className='msg '+cls;e.innerHTML=h;log.appendChild(e);log.scrollTop=log.scrollHeight;return e};
+ if(!Index.D)return bot('x','No notes loaded. Open Dashboard and load material first.');
+ const{qt,qv,rk,top}=Index.search(q),r=rk[0];
+ if(!qt.length||r.s<.12)return bot('x',`Signal lost. Not covered in your notes (best match ${r.s.toFixed(2)}, below the 0.12 threshold).`);
+ const src=`<div class="src">Source: ${esc([...new Set(top.map(x=>x.c.sec))].join(', '))} · confidence ${r.s.toFixed(2)}<div class="bar"><i style="width:${Math.min(100,r.s*160)}%"></i></div></div>`;
+ if(AIs.fn){const el=bot('','<span class="mu">Thinking…</span>');
+  const ctx=top.map(x=>'['+x.c.sec+'] '+x.c.text).join('\n\n');
+  try{const t=await AIs.run('You are a study tutor. Answer using ONLY the excerpts. Give 3-6 bullets, with one short example bullet if helpful. If excerpts do not support an answer, give one bullet saying it is not in the notes.\n\nEXCERPTS:\n'+ctx+'\n\nQUESTION: '+q,t=>{el.innerHTML=Bullets.html(t);log.scrollTop=log.scrollHeight});
+   el.innerHTML=Bullets.html(t.text)+src}catch(e){el.className='msg x';el.textContent=AIs.err(e)}}
+ else{const ss=sentsOf(r.c.text).map(s=>({s,sc:Index.cos(qv,Index.D.vec(tok(s)))})).sort((a,b)=>b.sc-a.sc).slice(0,3).map(x=>x.s);
+  bot('',Bullets.list(ss)+src)}
+ log.scrollTop=log.scrollHeight}};
+
+const Cards={list:[],i:0,
+ make(){const re=/^(?:The |A |An )?([A-Za-z][\w\s'-]{2,40}?) (?:is|are|refers to|means|occurs when|is called) (.{15,})/;
+  this.list=[];Index.sents().forEach(({s,sec})=>{const m=s.match(re);if(m)this.list.push({f:'Define: '+m[1].trim(),b:s,s,sec})});
+  const fill=skip=>Index.sents().forEach(({s,sec})=>{const k=Index.keyword(s),f=k&&'Fill in: '+s.replace(k,'_____');if(k&&this.list.length<25&&!this.list.some(c=>c.f===f||(skip&&c.s===s)))this.list.push({f,b:k+' — '+s,s,sec})});fill(true);fill(false);
+  this.list=this.list.slice(0,25);this.sort();this.show()},
+ async aiMake(){if(!Index.D)return toast('Load notes first.');if(!AIs.fn)return toast('AI cards only run inside Claude.');
+  toast('Generating 25 cards…');
+  try{const j=await AIs.fn.json('From the notes write exactly 25 flashcards covering every section. "f" is a short question or term; "b" is the answer in max 25 words. Use only the notes. Return ONLY a JSON array of {"f":string,"b":string,"sec":string}.\n\nNOTES:\n'+Index.D.full,{cache:false});
+   const seen=new Set();this.list=j.filter(x=>x&&x.f&&x.b&&!seen.has(x.f)&&seen.add(x.f)).slice(0,25).map(x=>({f:x.f,b:x.b,sec:x.sec||'AI'}));this.sort();this.show();toast(this.list.length+' AI cards ready')}catch(e){toast(AIs.err(e))}},
+ box:c=>(Store.d.srs[c.f]||{box:0}).box,
+ sort(){this.list=shuf(this.list).sort((a,b)=>this.box(a)-this.box(b));this.i=0},
+ show(){const el=$('card');el.classList.remove('f');const has=this.list.length>0;$('cagain').disabled=$('cgot').disabled=!has;
+  if(!has){$('cf').textContent='No cards yet.';$('cmeta').textContent='Load notes to generate cards.';return}
+  const c=this.list[this.i];$('cf').textContent=c.f;$('cb').textContent=c.b;
+  $('cmeta').innerHTML=`Card ${this.i+1} of ${this.list.length} · level ${this.box(c)}/4 · tap card to flip`;UI.mastery()},
+ rate(ok){const c=this.list[this.i],o=Store.d.srs[c.f]||{box:0};
+  Store.d.srs[c.f]={box:ok?Math.min(4,o.box+1):0};Store.save();
+  if(this.i>=this.list.length-1){this.sort();toast('Round done. Weakest cards first.')}else this.i++;this.show()}};
+
+const Quiz={qs:[],idx:-1,score:0,
+ start(){if(!Index.D)return toast('Load notes first.');
+  const pool=shuf(Index.sents().filter(x=>x.s.length<220)),keys=[...new Set(pool.map(x=>Index.keyword(x.s)).filter(Boolean))];
+  this.qs=pool.slice(0,8).map(x=>{const k=Index.keyword(x.s);if(!k)return null;return{t:x.s.replace(k,'_____'),k,o:shuf([k,...shuf(keys.filter(z=>z!==k)).slice(0,3)]),sec:x.sec}}).filter(Boolean);
+  this.idx=0;this.score=0;this.show()},
+ show(){const b=$('qbox');
+  if(this.idx>=this.qs.length){b.innerHTML=`<div class="stat">${this.score}/${this.qs.length}</div><p class="mu">Quiz complete. Results saved to your tracker.</p><button class="b" id="qstart">Run again</button>`;$('qstart').onclick=()=>this.start();UI.stats();return}
+  const q=this.qs[this.idx];
+  b.innerHTML=`<p class="mu">Question ${this.idx+1} of ${this.qs.length} · ${esc(q.sec)}</p><div class="bar"><i style="width:${this.idx/this.qs.length*100}%"></i></div><p style="margin-top:10px">${esc(q.t)}</p>`+q.o.map(o=>`<button class="opt">${esc(o)}</button>`).join('');
+  b.querySelectorAll('.opt').forEach(btn=>btn.onclick=()=>{
+   const ok=btn.textContent===q.k;if(ok)this.score++;Store.d.prog.push({sec:q.sec,ok});Store.save();
+   b.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.textContent===q.k)x.classList.add('ok')});if(!ok)btn.classList.add('no');
+   setTimeout(()=>{this.idx++;this.show()},1000)})}};
+
+const Studio={text:'',P:{sum:'Write study notes: short headings, bullets, bold key terms. End with a "## Recap" of 3 bullets.',terms:'List the 12 most important key terms, each as "**term**: plain-language definition".',simple:'Explain to a complete beginner in simple language, with 2-3 analogies as bullets under headings.',exam:'Write a 10-question practice exam: 6 multiple choice (options A-D as sub-bullets) and 4 short answer. Add "## Answer Key" with one bullet per answer.'},
+ async run(t){const out=$('aiOut');
+  if(!Index.D)return out.innerHTML='<span class="mu">Load notes on the Dashboard first.</span>';
+  if(!AIs.fn){if(t==='sum'||t==='terms')return this.offline(t);return out.innerHTML='<span class="mu">This tool needs Claude AI. Summary and Key terms work offline.</span>'}
+  out.innerHTML='<span class="mu">Analyzing your notes…</span>';
+  try{if(t==='qa'){
+    const j=await AIs.fn.json('Write 10 study questions that test understanding, each with a model answer of 2-3 short bullet strings. Use only the notes. Return ONLY a JSON array of {"q":string,"a":string[]}.\n\nNOTES:\n'+Index.D.full,{cache:false});
+    this.text=j.map((x,i)=>(i+1)+'. '+x.q+'\n'+[].concat(x.a).map(a=>'  • '+a).join('\n')).join('\n\n');
+    out.innerHTML=j.map((x,i)=>`<details class="msg"><summary style="cursor:pointer"><b>${i+1}.</b> ${esc(x.q)}</summary><div style="color:var(--gn)">${Bullets.list([].concat(x.a))}</div></details>`).join('')}
+   else{const r=await AIs.run(this.P[t]+' Use only the notes.\n\nNOTES:\n'+Index.D.full,x=>out.innerHTML=Bullets.html(x));this.text=Bullets.text(r.text);out.innerHTML=Bullets.html(r.text)}
+  }catch(e){out.innerHTML='<span style="color:var(--rd)">'+esc(AIs.err(e))+'</span>'}},
+ offline(t){const D=Index.D;let txt='';
+  if(t==='sum'){const by={};D.chunks.forEach(c=>(by[c.sec]=by[c.sec]||[]).push(...sentsOf(c.text).slice(0,2)));txt=Object.entries(by).map(([s,a])=>'## '+s+'\n'+a.join('\n')).join('\n')}
+  else txt='## Key terms\n'+Cards.list.filter(c=>c.f.startsWith('Define')).map(c=>'**'+c.f.slice(8)+'**: '+c.b).join('\n');
+  this.text=Bullets.text(txt);$('aiOut').innerHTML=Bullets.html(txt)},
+ async download(){if(!this.text)return toast('Generate something first.');
+  try{const d=window.claude&&await claude.use('downloads');if(d)await d.save({filename:'nexora-study-notes.txt',data:this.text});else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([this.text],{type:'text/plain'}));a.download='nexora-study-notes.txt';a.click()}}catch(e){}}};
+
+const Gen={async run(){const t=$('topic').value.trim();if(!t)return toast('Type a topic first.');
+ if(!AIs.fn)return toast('Auto-generate needs Claude AI. Load a built-in subject instead.');
+ $('status').textContent='Generating notes on '+t+'…';
+ try{const r=await AIs.fn('Write study notes on "'+t+'" for a student. Exactly 9 sections. Each section is a "## Heading" line (max 5 words) followed by 3 factual sentences of 15-30 words each, as plain text with no bullets or lists. Where natural, start definitions with "X is ...". Be accurate.',{cache:false});
+  if(Index.build(t+' (auto notes)',r.text)){Studio.text=Bullets.text(r.text);$('aiOut').innerHTML=Bullets.html(r.text);$('status').textContent='Notes generated and indexed. '+Cards.list.length+' flashcards ready.';UI.go('ai')}}
+ catch(e){$('status').textContent=AIs.err(e)}}};
+const Coach={weak(){const by={};Store.d.prog.forEach(p=>{(by[p.sec]=by[p.sec]||[0,0])[p.ok?0:1]++});
+  return Object.entries(by).map(([s,[a,b]])=>({s,p:a/(a+b),n:a+b})).filter(x=>x.p<.8).sort((a,b)=>a.p-b.p).slice(0,3)},
+ async run(){const out=$('coachOut');
+  if(!Index.D)return out.innerHTML='<span class="mu">Load notes first.</span>';
+  const w=this.weak();
+  if(!Store.d.prog.length)return out.innerHTML='<span class="mu">Take a quiz first so the coach can find weak spots.</span>';
+  if(!w.length)return out.innerHTML=Bullets.list(['No weak sections found (all at 80%+).','Run another quiz to keep testing yourself.']);
+  const facts=w.map(x=>Index.D.chunks.filter(c=>c.sec===x.s).map(c=>c.text).join(' ')).join('\n');
+  if(!AIs.fn){return out.innerHTML=Bullets.html('## Focus sections\n'+w.map(x=>`${x.s} (${Math.round(x.p*100)}% over ${x.n} answers)`).join('\n')+'\n## Do this\nRe-read each section above.\nRe-run the quiz and flip the matching flashcards.')}
+  out.innerHTML='<span class="mu">Building your plan…</span>';
+  try{const r=await AIs.run('A student is weak in these sections: '+w.map(x=>`${x.s} (${Math.round(x.p*100)}% correct)`).join(', ')+'. Using ONLY the notes, create: "## Focus areas" (why each is hard), "## Must-know facts" (5 bullets), "## Memory tricks" (2 bullets), "## 3-day plan" (one bullet per day).\n\nNOTES:\n'+facts,x=>out.innerHTML=Bullets.html(x));out.innerHTML=Bullets.html(r.text);Studio.text=Bullets.text(r.text)}
+  catch(e){out.innerHTML='<span style="color:var(--rd)">'+esc(AIs.err(e))+'</span>'}}};
+
+/* ---------- UI ---------- */
+const UI={
+ afterIndex(){const D=Index.D;$('badge').textContent=D.name;$('sDoc').textContent=D.name.length>22?D.name.slice(0,20)+'…':D.name;$('sCh').textContent=D.N+' chunks indexed';
+  const secs={};D.chunks.forEach(c=>secs[c.sec]=(secs[c.sec]||0)+1);
+  $('toc').innerHTML=Object.entries(secs).map(([s,n])=>`<div><b>${esc(s)}</b> <span class="mu">· ${n} chunk${n>1?'s':''}</span></div>`).join('');
+  $('status').textContent='Indexed. Open Q&A, Flashcards or Quiz.';Cards.make();Quiz.idx=-1;
+  $('qbox').innerHTML='<p class="mu">Fill-in-the-blank questions built from your notes.</p><button class="b" id="qstart">Start quiz</button>';$('qstart').onclick=()=>Quiz.start()},
+ mastery(){const n=Cards.list.length,m=Cards.list.filter(c=>Cards.box(c)>=4).length;$('sCm').textContent=n?m+' / '+n:'–'},
+ stats(){const P=Store.d.prog,n=P.length,ok=P.filter(p=>p.ok).length;
+  $('pN').textContent=n;$('pA').textContent=n?Math.round(ok/n*100)+'%':'–';$('sMa').textContent=n?Math.round(ok/n*100)+'%':'–';
+  const by={};P.forEach(p=>{(by[p.sec]=by[p.sec]||[0,0])[p.ok?0:1]++});
+  $('pSec').innerHTML=Object.keys(by).length?Object.entries(by).map(([s,[a,b]])=>{const p=Math.round(a/(a+b)*100);return`<div style="margin-bottom:12px">${esc(s)} <span class="mu">· ${p}%</span><div class="bar"><i style="width:${p}%;background:${p<60?'var(--rd)':p<80?'var(--am)':'var(--gn)'}"></i></div></div>`}).join(''):'<span class="mu">No quiz data yet.</span>'},
+ T:[['dash','Dashboard'],['chat','Q&A'],['cards','Flashcards'],['quiz','Quiz'],['ai','AI Studio'],['prog','Tracker']],
+ go(k){this.T.forEach(([x])=>$('t-'+x).hidden=x!==k);document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));if(k==='prog')this.stats();try{location.hash=k}catch(e){}},
+ theme(t){document.documentElement.dataset.theme=t;Store.d.theme=t}};
+
+/* ---------- FILE INPUT ---------- */
+const SAMPLES={
+ml:["Machine Learning Fundamentals",`Core Ideas
+Machine learning is the study of algorithms that improve their performance on a task through experience with data. Supervised learning uses labeled examples to learn a mapping from inputs to outputs. Unsupervised learning finds structure in unlabeled data, such as clusters or latent factors.
+Gradient Descent
+Gradient descent is an optimization algorithm that iteratively adjusts parameters in the direction that reduces the loss function. The learning rate controls the size of each update step. A learning rate that is too large can cause divergence, while one that is too small makes training slow.
+Generalization
+Overfitting occurs when a model memorizes training data and performs poorly on unseen data. Regularization reduces overfitting by penalizing large weights. Cross-validation estimates how well a model will generalize by training on several splits of the data.
+Neural Networks
+A neural network is a model built from layers of connected units that apply weights and nonlinear activation functions. Backpropagation computes gradients of the loss with respect to every weight using the chain rule. Deep networks can learn hierarchical representations of raw input.
+Evaluation Metrics
+Accuracy is the fraction of predictions that a classifier gets right. Precision measures how many predicted positives are truly positive, while recall measures how many true positives were found. The F1 score is the harmonic mean of precision and recall.
+Decision Trees
+A decision tree is a model that splits data using a sequence of feature-based questions. Entropy and Gini impurity measure how mixed the classes are at a node. Random forests combine many trees to reduce variance and improve accuracy.
+Clustering
+Clustering is an unsupervised task that groups similar data points together. K-means assigns each point to the nearest centroid and then recomputes the centroids. The elbow method helps choose a suitable number of clusters.
+Reinforcement Learning
+Reinforcement learning trains an agent to maximize cumulative reward by interacting with an environment. A policy is the rule that maps each state to an action. The exploration-exploitation trade-off balances trying new actions against using known good ones.
+Data Preprocessing
+Feature scaling puts variables on comparable ranges so that optimization works well. One-hot encoding turns categorical values into binary indicator columns. Data leakage occurs when information from the test set influences training and inflates results.`],
+bio:["Cellular Biology Notes",`Cell Structure
+The cell is the basic structural and functional unit of all living organisms. Prokaryotic cells lack a nucleus, while eukaryotic cells keep their DNA inside a membrane-bound nucleus. The plasma membrane is a phospholipid bilayer that controls what enters and leaves the cell.
+Organelles
+Mitochondria are organelles that generate most of the cell's ATP through oxidative phosphorylation. The endoplasmic reticulum synthesizes proteins and lipids, and the Golgi apparatus modifies and packages them for transport. Lysosomes contain enzymes that digest waste and damaged components.
+Cell Division
+Mitosis is the process by which a cell divides into two genetically identical daughter cells. Meiosis produces four genetically distinct gametes with half the chromosome number. The cell cycle is regulated by checkpoints that prevent damaged DNA from being copied.
+Photosynthesis
+Chloroplasts are organelles in plant cells that capture light energy to build glucose from carbon dioxide and water. The light reactions occur in the thylakoid membranes, and the Calvin cycle occurs in the stroma.
+DNA and Genes
+DNA is a double helix made of nucleotides containing the bases adenine, thymine, guanine and cytosine. A gene is a segment of DNA that codes for a functional product such as a protein. Replication is semi-conservative, so each new molecule keeps one original strand.
+Protein Synthesis
+Transcription is the process of copying a gene into messenger RNA inside the nucleus. Translation occurs at ribosomes, where transfer RNA matches codons to amino acids. A codon is a sequence of three nucleotides that specifies one amino acid.
+Cell Respiration
+Glycolysis splits glucose into pyruvate in the cytoplasm and yields a small amount of ATP. The Krebs cycle occurs in the mitochondrial matrix and produces electron carriers. The electron transport chain uses these carriers to make most of the ATP.
+Cell Signaling
+A receptor is a protein that binds a specific signaling molecule and triggers a response in the cell. Hormones are chemical messengers carried by the blood to distant target cells. Signal transduction is the chain of steps that converts a signal into a cellular response.
+Genetics and Heredity
+An allele is one of several alternative forms of a gene. A dominant allele masks the effect of a recessive allele in a heterozygous organism. Mutations are changes in DNA sequence that can create new alleles and drive evolution.`],
+phy:["Physics Essentials",`Motion
+Velocity is the rate of change of position and includes direction. Acceleration is the rate of change of velocity over time. Free fall near Earth has a constant acceleration of about 9.8 meters per second squared.
+Newton's Laws
+The first law states that an object keeps its state of motion unless a net force acts on it. The second law says that net force equals mass multiplied by acceleration. The third law says that every action force has an equal and opposite reaction force.
+Work and Energy
+Work is done when a force moves an object through a distance in the direction of the force. Kinetic energy is the energy of motion and depends on mass and the square of speed. The law of conservation of energy states that energy can be transformed but never created or destroyed.
+Momentum
+Momentum is the product of an object's mass and velocity. Impulse is the change in momentum and equals force multiplied by the time it acts. In an isolated system the total momentum is conserved during collisions.
+Waves
+A wave is a disturbance that transfers energy without transferring matter. Frequency is the number of wave cycles that pass a point each second. The speed of a wave equals its frequency multiplied by its wavelength.
+Electricity
+Current is the flow of electric charge and is measured in amperes. Voltage is the energy per unit charge that drives current through a circuit. Ohm's law states that voltage equals current multiplied by resistance.
+Magnetism
+A magnetic field is the region around a magnet or moving charge where magnetic forces act. Electromagnetic induction occurs when a changing magnetic field produces a voltage in a conductor. Transformers use induction to step voltage up or down in alternating current systems.
+Thermodynamics
+Temperature is a measure of the average kinetic energy of the particles in a substance. Heat is the transfer of thermal energy from a hotter object to a colder one. The second law of thermodynamics states that the entropy of an isolated system never decreases.
+Optics
+Refraction is the bending of light as it passes from one medium into another. A convex lens converges parallel rays of light to a focal point. Total internal reflection occurs when light hits a boundary at an angle beyond the critical angle.`],
+chem:["Chemistry Fundamentals",`Atomic Structure
+An atom consists of a nucleus of protons and neutrons surrounded by electrons. The atomic number is the number of protons in the nucleus of an element. Isotopes are atoms of the same element that have different numbers of neutrons.
+Periodic Table
+The periodic table arranges elements by increasing atomic number and recurring chemical properties. Elements in the same group have the same number of valence electrons. Electronegativity generally increases across a period and decreases down a group.
+Chemical Bonding
+An ionic bond forms when electrons are transferred from a metal to a nonmetal. A covalent bond forms when two atoms share one or more pairs of electrons. Metallic bonding involves a sea of delocalized electrons that conducts electricity well.
+Chemical Reactions
+A catalyst is a substance that speeds up a reaction without being consumed. The activation energy is the minimum energy needed for reactants to form products. Oxidation is the loss of electrons and reduction is the gain of electrons.
+Acids and Bases
+An acid is a substance that donates hydrogen ions in water. The pH scale measures acidity, and a lower pH means a higher hydrogen ion concentration. A buffer is a solution that resists changes in pH when small amounts of acid or base are added.
+Stoichiometry
+A mole is the amount of a substance that contains about 6.022 times ten to the power of twenty-three particles. Molar mass is the mass of one mole of a substance in grams. The limiting reactant is the reactant that runs out first and sets the maximum amount of product.
+Thermochemistry
+An exothermic reaction releases heat to its surroundings. An endothermic reaction absorbs heat from its surroundings. Enthalpy change is the heat absorbed or released by a reaction at constant pressure.
+Chemical Equilibrium
+Equilibrium is reached when the forward and reverse reaction rates are equal. Le Chatelier's principle states that a system at equilibrium shifts to oppose any imposed change. The equilibrium constant compares product concentrations to reactant concentrations at equilibrium.
+Organic Chemistry
+Hydrocarbons are organic compounds made only of carbon and hydrogen. A functional group is a specific group of atoms that gives a molecule its characteristic reactions. Isomers are compounds that share a molecular formula but differ in structure.`],
+net:["Computer Networks",`Network Basics
+A network is a set of devices connected so that they can exchange data. Bandwidth is the maximum rate at which data can be transferred over a link. Latency is the time it takes for a packet to travel from source to destination.
+OSI Model
+The OSI model divides network communication into seven layers from physical to application. The transport layer provides end-to-end delivery and error recovery between hosts. The network layer is responsible for logical addressing and routing of packets.
+IP Addressing
+An IP address is a numeric label that identifies a device on a network. A subnet mask separates the network portion of an address from the host portion. IPv6 uses 128-bit addresses to solve the shortage of IPv4 addresses.
+TCP and UDP
+TCP is a connection-oriented protocol that guarantees ordered and reliable delivery. UDP is a connectionless protocol that sends datagrams quickly without guarantees. The three-way handshake establishes a TCP connection using SYN, SYN-ACK and ACK messages.
+DNS and HTTP
+The Domain Name System translates human-readable domain names into IP addresses. HTTP is the application protocol that web browsers use to request pages from servers. HTTPS adds TLS encryption to HTTP to protect data in transit.
+Routing
+A router is a device that forwards packets between different networks. A routing table lists the best path to each known destination network. The Border Gateway Protocol exchanges routing information between autonomous systems on the internet.
+Network Security
+A firewall is a system that filters traffic according to a set of security rules. Encryption converts data into unreadable form so that only authorized parties can read it. A denial of service attack floods a target with traffic to make it unavailable.
+Wireless Networks
+Wi-Fi is a family of wireless protocols that connect devices to a local network using radio waves. An access point is a device that bridges wireless clients to a wired network. Interference from nearby devices can reduce wireless throughput and increase errors.
+Cloud Computing
+Cloud computing delivers computing resources over the internet on a pay-as-you-go basis. Infrastructure as a service provides virtual machines, storage and networking on demand. A content delivery network caches content on servers close to users to reduce latency.`],
+eco:["Economics Principles",`Scarcity and Choice
+Scarcity is the condition of having unlimited wants but limited resources. Opportunity cost is the value of the next best alternative that is given up when making a choice. The production possibilities frontier shows the maximum combinations of goods an economy can produce.
+Supply and Demand
+The law of demand states that quantity demanded falls as price rises, all else equal. The law of supply states that quantity supplied rises as price rises, all else equal. Market equilibrium occurs at the price where quantity supplied equals quantity demanded.
+Elasticity
+Price elasticity of demand measures how strongly quantity demanded responds to a price change. Demand is elastic when consumers are highly sensitive to price changes. Necessities tend to have inelastic demand because there are few close substitutes.
+Market Structures
+Perfect competition is a market with many sellers offering identical products and no pricing power. A monopoly is a market with a single seller protected by barriers to entry. An oligopoly is a market dominated by a few large firms that influence each other's decisions.
+Gross Domestic Product
+Gross domestic product is the total market value of all final goods and services produced in a country in a year. Real GDP adjusts for inflation so that output can be compared across years. Economic growth is an increase in real GDP over time.
+Inflation
+Inflation is a sustained increase in the general price level of an economy. The consumer price index measures the average change in prices paid for a basket of goods. Demand-pull inflation occurs when total demand exceeds the economy's productive capacity.
+Unemployment
+The unemployment rate is the percentage of the labor force that is jobless and actively seeking work. Frictional unemployment occurs while workers search for suitable jobs. Structural unemployment results from a mismatch between workers' skills and available jobs.
+Monetary Policy
+Monetary policy is the use of interest rates and the money supply to influence the economy. A central bank raises interest rates to cool inflation and lowers them to stimulate growth. Open market operations are purchases and sales of government bonds that change bank reserves.
+Fiscal Policy
+Fiscal policy is the use of government spending and taxation to influence the economy. A budget deficit occurs when government spending exceeds tax revenue in a year. The multiplier effect describes how an initial change in spending causes a larger change in total output.`]};
+async function readFile(f){
+ $('status').textContent='Scanning '+f.name+'…';
+ try{if(/\.pdf$/i.test(f.name)){
+   pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+   const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;let t='';
+   for(let i=1;i<=pdf.numPages;i++){const c=await(await pdf.getPage(i)).getTextContent();t+='Page '+i+'\n'+c.items.map(x=>x.str).join(' ')+'\n'}
+   Index.build(f.name,t)}else Index.build(f.name,await f.text())
+ }catch(e){$('status').textContent='Could not read that file. Paste the text instead.'}}
+
+/* ---------- WIRING ---------- */
+Store.load();UI.theme(Store.d.theme||'dark');
+$('nav').innerHTML=UI.T.map(([k,l])=>`<button data-k="${k}">${l}</button>`).join('');
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>UI.go(b.dataset.k));
+$('theme').onclick=()=>{UI.theme(document.documentElement.dataset.theme==='light'?'dark':'light');Store.save()};
+$('file').onchange=e=>e.target.files[0]&&readFile(e.target.files[0]);
+const dz=$('drop');dz.onclick=()=>$('file').click();
+dz.ondragover=e=>{e.preventDefault();dz.classList.add('ov')};dz.ondragleave=()=>dz.classList.remove('ov');
+dz.ondrop=e=>{e.preventDefault();dz.classList.remove('ov');e.dataTransfer.files[0]&&readFile(e.dataTransfer.files[0])};
+$('loadPaste').onclick=()=>{const t=$('paste').value.trim();t?Index.build('Pasted notes',t):$('status').textContent='Paste some notes first.'};
+$('subj').innerHTML=Object.entries(SAMPLES).map(([k,v])=>`<option value="${k}">${esc(v[0])}</option>`).join('');
+$('sLoad').onclick=()=>Index.build(...SAMPLES[$('subj').value]);
+$('gen').onclick=()=>Gen.run();$('topic').onkeydown=e=>{if(e.key==='Enter')Gen.run()};$('cai').onclick=()=>Cards.aiMake();
+$('ask').onclick=()=>Chat.ask();$('q').onkeydown=e=>{if(e.key==='Enter')Chat.ask()};
+$('card').onclick=()=>Cards.list.length&&$('card').classList.toggle('f');
+$('cgot').onclick=()=>Cards.rate(true);$('cagain').onclick=()=>Cards.rate(false);
+$('cshuf').onclick=()=>{Cards.sort();Cards.show()};
+$('qstart').onclick=()=>Quiz.start();
+$('reset').onclick=()=>{Store.d.prog=[];Store.d.srs={};Store.save();UI.stats();Cards.show();toast('Progress reset')};
+document.querySelectorAll('[data-ai]').forEach(b=>b.onclick=()=>Studio.run(b.dataset.ai));
+$('aiDl').onclick=()=>Studio.download();$('coach').onclick=()=>Coach.run();
+UI.go(UI.T.some(([k])=>k===location.hash.slice(1))?location.hash.slice(1):'dash');UI.stats();
+if(Store.d.doc)Index.build(Store.d.doc.name,Store.d.doc.text,true);
+AIs.init();
+
+/* Starfield */
+(()=>{const c=$('stars'),x=c.getContext('2d');let W,H,S=[];
+ const rs=()=>{W=c.width=innerWidth;H=c.height=innerHeight;S=Array.from({length:80},()=>({x:Math.random()*W,y:Math.random()*H,z:Math.random()*1.4+.3}))};rs();addEventListener('resize',rs);
+ const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+ (function f(){const light=document.documentElement.dataset.theme==='light';x.clearRect(0,0,W,H);if(!light)S.forEach(s=>{x.fillStyle=s.z>1.2?'#4df0ff':'#6f8fa0';x.globalAlpha=.4+s.z/3;x.fillRect(s.x,s.y,s.z,s.z);if(!still){s.y+=s.z*.15;if(s.y>H)s.y=0}});x.globalAlpha=1;if(!still)requestAnimationFrame(f)})();
+})();
+</script></body></html>
